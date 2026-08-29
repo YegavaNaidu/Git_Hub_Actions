@@ -1,4 +1,4 @@
-name: Hello_World
+name: Hello World
 
 on: 
   workflow_dispatch:
@@ -7,4 +7,4 @@ jobs:
   say-hello-inline-bash:
     runs-on: ubuntu-24.04
     steps:
-      -runs: echo "Hello World"
+      - runs: echo "Hello World !"
