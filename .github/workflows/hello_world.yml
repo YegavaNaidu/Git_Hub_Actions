@@ -25,7 +25,7 @@ jobs:
   job4:
     runs-on: ubuntu-24.04
     needs:
-      - jobs2
-      - jobs3
+      - job2
+      - job3
     steps:
       - run: echo "final job"
