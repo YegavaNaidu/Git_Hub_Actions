@@ -8,3 +8,9 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - run: echo "Hello World !"
+  
+  say-hello-python:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: print("hello world from python")
+        shell: python
