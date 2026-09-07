@@ -19,5 +19,8 @@ jobs:
           distribution : 'temurin'
           java-version : '21'
 
+      - name : make mvn wrapper executable
+        run : chmod +x mvnw
+
       - name : build with maven
         run : ./mvn clean verify
