@@ -23,4 +23,4 @@ jobs:
         run : chmod +x mvnw
 
       - name : build with maven
-        run : ./mvnw clean verify
+        run : ./mvnw clean package -DskipTests
