@@ -37,4 +37,4 @@ jobs:
           username : ${{ secrets.DOCKERHUB_USERNAME }}
           password : ${{ secrets.DOCKERHUB_PASSWORD }}
       - name : push docker image
-          run : docker push ${{ secrets.DOCKERHUB_USERNAME }}/my-java-app:${{ env.APP_VERSION }}
+        run : docker push ${{ secrets.DOCKERHUB_USERNAME }}/my-java-app:${{ env.APP_VERSION }}
