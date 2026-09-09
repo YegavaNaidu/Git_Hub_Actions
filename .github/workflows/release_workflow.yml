@@ -29,8 +29,8 @@ jobs :
 
     - name : build docker image
       run : |
-        TAG_VERSION = ${GITHUB_REF_NAME#v}  
-        GITHUB_SHA = ${GITHUB_SHA::8}
+        TAG_VERSION=${GITHUB_REF_NAME#v}  
+        GITHUB_SHA=${GITHUB_SHA::8}
 
         docker build -t $IMAGE:$TAG_VERSION -t $IMAGE:$GITHUB_SHA .
 
@@ -44,8 +44,8 @@ jobs :
 
     - name : push docker image
       run : |
-        TAG_VERSION = ${GITHUB_REF_NAME#v}  
-        GITHUB_SHA = ${GITHUB_SHA::8}
+        TAG_VERSION=${GITHUB_REF_NAME#v}  
+        GITHUB_SHA=${GITHUB_SHA::8}
 
         docker push $IMAGE:$TAG_VERSION
         docker push $IMAGE:$GITHUB_SHA
