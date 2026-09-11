@@ -41,7 +41,7 @@ jobs :
           echo "VRESION=$VERSION" >> $GITHUB_OUTPUT
 
       - name : Deploy to Azure Container App
-        runs on : |
+        run  : |
           az containerapp update \
             --name ${{ env.ContainerApp }} \
             --resource-group ${{ env.ResourceGroup }} \
