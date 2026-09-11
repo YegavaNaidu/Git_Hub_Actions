@@ -41,12 +41,14 @@ jobs :
       uses : docker/metadata-action@v5
       with :
         images : ${{ env.IMAGE}}
+        flavor : |
+          latest=false
         tags : |
           type=semver,pattern={{version}},value=${{ github.ref_name }}
           type=sha,format=short
 
     - name : build and push docker image
-      uses : docker/build-push-action@v6
+      uses : docker/build-push-action@v6    
       with : 
         context : .
         push : true
