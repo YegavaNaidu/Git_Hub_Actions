@@ -33,7 +33,7 @@ jobs :
         id : version
         run : |
           TAG="${{ github.event.workflow_run.head_branch }}"
-          VERSION =${TAG#v}
+          VERSION=${TAG#v}
 
           echo "TAG"=$TAG
           echo "VERSION"=$VERSION
