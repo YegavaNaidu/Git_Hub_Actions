@@ -3,7 +3,7 @@ name : CD - Deploying to Azure
 
 on :
   workflow_run :
-    workflows : ["Java CI"]
+    workflows : ["Docker Release"]
     types : 
       - completed
 
@@ -12,8 +12,8 @@ permissions :
   contents : read
 
 env:
-  ResourceGroup : re-yeaga-cicd
-  ContainerApp : re-yegava-java-app
+  ResourceGroup : rg-yeaga-cicd
+  ContainerApp : ca-yegava-java-app
   IMAGE : docker.io/yegavanaidu/my-java-app
 
 jobs : 
