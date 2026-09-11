@@ -43,6 +43,6 @@ jobs :
       - name : Deploy to Azure Container App
         run  : |
           az containerapp update \
-            --name "${{ env.ContainerApp }}" \
-            --resource-group "${{ env.ResourceGroup }}" \
-            --image "${{ env.IMAGE }}:${{ steps.version.outputs.version }}"
+            --name ${{ env.ContainerApp }} \
+            --resource-group ${{ env.ResourceGroup }} \
+            --image ${{ env.IMAGE }}:1.0.8
