@@ -12,7 +12,7 @@ permissions :
   contents : read
 
 env:
-  ResourceGroup : rg-yeaga-cicd
+  ResourceGroup : rg-yeagav-cicd
   ContainerApp : ca-yegava-java-app
   IMAGE : docker.io/yegavanaidu/my-java-app
 
@@ -42,7 +42,7 @@ jobs :
 
       - name : Deploy to Azure Container App
         run  : |
-          az containerapp update \
+          az containerapp update \  
             --name ${{ env.ContainerApp }} \
             --resource-group ${{ env.ResourceGroup }} \
             --image ${{ env.IMAGE }}:${{ steps.version.outputs.VERSION }}
