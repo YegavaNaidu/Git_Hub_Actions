@@ -19,6 +19,9 @@ jobs :
   release :
     runs-on : ubuntu-latest
 
+    outputs :
+      version : ${{ steps.version.outputs.version }}
+
     steps :
     - name : checkout code
       uses : actions/checkout@v5
@@ -40,7 +43,7 @@ jobs :
       run : |
         VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
         echo "Extracted version: $VERSION"
-        echo :Extracted version1: $version"
+        echo "Extracted version1: $version"
         echo "version=$VERSION" >> $GITHUB_OUTPUT   
 
     - name : set up docker-buildx
