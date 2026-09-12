@@ -16,7 +16,7 @@ env:
   IMAGE : docker.io/yegavanaidu/my-java-app
 
 jobs :
-  ci :
+  CI :
     uses : ./.github/workflows/ci.yml
     secrets :
       DOCKERHUB_USERNAME : ${{ secrets.DOCKERHUB_USERNAME }}
