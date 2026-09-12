@@ -55,5 +55,5 @@ jobs :
       with : 
         context : .
         push : true
-        tags : docker.io/${{ steps.version.outputs.version }}
+        tags : docker.io/${{ env.IMAGE }}:${{ steps.version.outputs.version }}
     
