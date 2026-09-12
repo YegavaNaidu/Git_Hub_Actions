@@ -1,10 +1,16 @@
 name : CI JAVA
 
 on : 
-  push:
-    branches :
-      - main
-  workflow_dispatch:
+  workfloe_call :
+    secrets :
+      DOCKERHUB_USERNAME :
+        required : true
+      DOCKERHUB_PASSWORD :
+        required : true
+    outputs :
+      version :
+        description : "Version of the docker image"
+        value : ${{ jobs.release.outputs.version }}
 
 env :
   IMAGE : ${{ secrets.DOCKERHUB_USERNAME }}/my-java-app 
