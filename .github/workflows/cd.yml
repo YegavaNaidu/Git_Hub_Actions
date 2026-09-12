@@ -13,7 +13,7 @@ permissions :
 env:
   ResourceGroup : rg-yeagav-cicd
   ContainerApp : ca-yegava-java-app
-  IMAGE : docker.io/yegavanaidu/my-java-app
+  IMAGE : docker.io/${{ secrets.DOCKERHUB_USERNAME }}/my-java-app
 
 jobs :
   CI :
