@@ -94,4 +94,51 @@ jobs :
         context : .
         push : true
         tags : docker.io/${{ env.IMAGE }}:${{ steps.version.outputs.version }}
+
+    - name: Keep only latest 5 versions
+      env:
+        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+      run: |
+        echo "Getting Docker Hub tags..."
+
+        TAGS=$(curl -s \
+          "https://hub.docker.com/v2/repositories/${DOCKERHUB_USERNAME}/my-java-app/tags?page_size=100" \
+          | jq -r '.results[].name' \
+          | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' \
+          | sort -V)
+
+        echo "All version tags:"
+        echo "$TAGS"
+
+        KEEP_TAGS=$(echo "$TAGS" | tail -n 5)
+
+        echo "Keeping:"
+        echo "$KEEP_TAGS"
+
+        DELETE_TAGS=$(echo "$TAGS" | head -n -5)
+
+        if [ -z "$DELETE_TAGS" ]; then
+          echo "Nothing to delete."
+          exit 0
+        fi
+
+        echo "Deleting:"
+        echo "$DELETE_TAGS"
+
+        TOKEN=$(curl -s -X POST \
+          -H "Content-Type: application/json" \
+          -d "{\"username\":\"${DOCKERHUB_USERNAME}\",\"password\":\"${DOCKERHUB_PASSWORD}\"}" \
+          https://hub.docker.com/v2/users/login/ \
+          | jq -r '.token')
+
+        for TAG in $DELETE_TAGS; do
+          echo "Deleting Docker tag: $TAG"
+
+          curl -s -X DELETE \
+            -H "Authorization: JWT $TOKEN" \
+            "https://hub.docker.com/v2/repositories/${DOCKERHUB_USERNAME}/my-java-app/tags/${TAG}/"
+
+          echo "Deleted $TAG"
+        done
     
