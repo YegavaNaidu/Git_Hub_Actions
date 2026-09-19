@@ -43,7 +43,6 @@ jobs :
       run : |
         VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
         echo "Extracted version: $VERSION"
-        echo "Extracted version1: $version"
         echo "version=$VERSION" >> $GITHUB_OUTPUT   
 
     - name : set up docker-buildx
@@ -53,7 +52,41 @@ jobs :
       uses : docker/login-action@v3
       with :
         username : ${{ secrets.DOCKERHUB_USERNAME }}
-        password : ${{ secrets.DOCKERHUB_PASSWORD }}  
+        password : ${{ secrets.DOCKERHUB_PASSWORD }}
+    
+    - name: Validate version
+      run: |
+        CURRENT_VERSION="${{ steps.version.outputs.version }}"
+
+        echo "Current application version: $CURRENT_VERSION"
+
+        TAGS=$(curl -s "https://hub.docker.com/v2/repositories/${{ env.IMAGE }}/tags?page_size=100" \
+          | jq -r '.results[].name' \
+          | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' \
+          | sort -V)
+
+        if [ -z "$TAGS" ]; then
+          echo "No previous version found. First release: $CURRENT_VERSION"
+          exit 0
+        fi
+
+        LATEST_VERSION=$(echo "$TAGS" | tail -n 1)
+
+        echo "Latest Docker version: $LATEST_VERSION"
+
+        if [ "$(printf '%s\n' "$LATEST_VERSION" "$CURRENT_VERSION" | sort -V | tail -n 1)" != "$CURRENT_VERSION" ]; then
+          echo "❌ Version $CURRENT_VERSION is not greater than $LATEST_VERSION"
+          echo "Please increase the version in pom.xml"
+          exit 1
+        fi
+
+        if [ "$CURRENT_VERSION" = "$LATEST_VERSION" ]; then
+          echo "❌ Version $CURRENT_VERSION already exists"
+          echo "Please increase the version in pom.xml"
+          exit 1
+        fi
+
+        echo "✅ Version validation passed"
 
     - name : build and push docker image
       uses : docker/build-push-action@v6    
